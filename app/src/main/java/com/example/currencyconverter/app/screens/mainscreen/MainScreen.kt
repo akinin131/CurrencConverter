@@ -152,7 +152,6 @@ import kotlin.math.round
         currentFlagImageResource = selectedCountry2.getFlagImageResource()
     }
 
-
     LaunchedEffect(selectedCurrency1) {
         dataStoreManager.getSelectedCurrency(true).collect { currency ->
             selectedCurrency1 = currency
