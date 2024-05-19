@@ -37,7 +37,3 @@ object AppModule {
             .create(CurrencyApiService::class.java)
     }
 }
-
-
-
-

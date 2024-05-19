@@ -5,4 +5,3 @@ data class Valute(
     val name: String,
     val previous: Double
 )
-

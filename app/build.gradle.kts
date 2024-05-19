@@ -107,6 +107,13 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
 
+    implementation ("io.coil-kt:coil-compose:2.4.0")
+
+    implementation("com.eygraber:compose-placeholder-material3:1.0.7")
+
+    implementation ("com.yandex.android:mobileads:5.8.0")
+
+
 }
 
 kapt {

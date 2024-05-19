@@ -6,15 +6,13 @@ import com.example.currencyconverter.domain.CurrencyRepository
 import javax.inject.Inject
 
 class CurrencyRepositoryImpl @Inject constructor(
-    private val apiService: CurrencyApiService // CurrencyApiService - ваш сервис Retrofit
+    private val apiService: CurrencyApiService
 ) : CurrencyRepository {
-
     override suspend fun getCurrencies(): List<Currency> {
         return try {
             val response = apiService.getCurrencies()
             if (response.isSuccessful) {
                 response.body()?.let { data ->
-                    // Преобразуйте данные из API в список объектов Currency
                     data.Valute.values.map { valute ->
                         Currency(
                             ID = valute.ID,
@@ -28,15 +26,10 @@ class CurrencyRepositoryImpl @Inject constructor(
                     }
                 } ?: emptyList()
             } else {
-                // Обработка ошибки
                 emptyList()
             }
         } catch (e: Exception) {
-            // Обработка исключений
             emptyList()
         }
     }
-
-
 }
-

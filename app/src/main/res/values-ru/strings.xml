@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Конвертер</string>
+    <string name="not_connection">Проблема со связью</string>
+    <string name="check_connection">Проверьте настройки сети</string>
+    <string name="valute_one_editText">Валюта №1</string>
+    <string name="valute_two_editText">Валюта №2</string>
+    <string name="search">Поиск валюты</string>
+    <string name="valute_name_usa">США</string>
+    <string name="valute_name_euro">Евро</string>
+    <string name="valute_name_armenia">Армянские драмы</string>
+    <string name="valute_name_georgia">Грузинские лари</string>
+    <string name="valute_name_ruble">Российский рубль</string>
+    <string name="valute_name_australia">Австралийский доллар</string>
+    <string name="valute_name_azerbaijani">Азербайджанский манат</string>
+    <string name="valute_name_great_britain">Фунт стерлингов Соединенного королевства</string>
+    <string name="valute_name_belarus">Белорусский рубль</string>
+    <string name="valute_name_bulgarian">Болгарский лев</string>
+    <string name="valute_name_brazil">Бразильский реал</string>
+    <string name="valute_name_hungarian">Венгерские форинты</string>
+    <string name="valute_name_vietnam">Вьетнамские донги</string>
+    <string name="valute_name_hongkong">Гонконгский доллар</string>
+    <string name="valute_name_dat">Датская крона</string>
+    <string name="valute_name_arab">Дирхам ОАЭ</string>
+    <string name="valute_name_egypt">Египетский фунт</string>
+    <string name="valute_name_india">Индийская рупия</string>
+    <string name="valute_name_indonesia">Индонезийская рупия</string>
+    <string name="valute_name_kazakhstan">Казахский тенге</string>
+    <string name="valute_name_canada">Канадский доллар</string>
+    <string name="valute_name_qatar">Катарский риал</string>
+    <string name="valute_name_kyrgyzstan">Киргизские сомы</string>
+    <string name="valute_name_china">Китайский юань</string>
+    <string name="valute_name_moldova">Молдавский лей</string>
+    <string name="valute_name_new_zealand">Новозеландский доллар</string>
+    <string name="valute_name_norway">Норвежская крона</string>
+    <string name="valute_name_poland">Польский злотый</string>
+    <string name="valute_name_romania">Румынский лей</string>
+    <string name="valute_name_singapure">Сингапурский доллар</string>
+    <string name="valute_name_tajikistan">Таджикский сомони</string>
+    <string name="valute_name_thailand">Таиландский бат</string>
+    <string name="valute_name_turkmenistan">Новый туркменский манат</string>
+    <string name="valute_name_turkey">Турецкая лира</string>
+    <string name="valute_name_uzbekistan">Узбекский сум</string>
+    <string name="valute_name_ukraine">Украинская гривна</string>
+    <string name="valute_name_czech">Чешская крона</string>
+    <string name="valute_name_sweden">Шведская крона</string>
+    <string name="valute_name_switzerland">Швейцарский франк</string>
+    <string name="valute_name_serbia">Сербский динар</string>
+    <string name="valute_name_uar">Южноафриканский рэнд</string>
+    <string name="valute_name_south_korea">Вон Республики Корея</string>
+    <string name="valute_name_japan">Японские иены</string>
+
+    <string name="banner_1">demo-banner-yandex</string>
+    <string name="banner_ad_mob">ca-app-pub-3940256099942544/6300978111</string>
+</resources>

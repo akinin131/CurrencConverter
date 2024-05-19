@@ -1,3 +1,55 @@
 <resources>
     <string name="app_name">Converter</string>
+    <string name="not_connection">Connection problem</string>
+    <string name="check_connection">Check your network settings</string>
+    <string name="valute_one_editText">Currency №1</string>
+    <string name="valute_two_editText">Currency №2</string>
+    <string name="search">Currency search</string>
+    <string name="valute_name_usa">USA</string>
+    <string name="valute_name_euro">Euro</string>
+    <string name="valute_name_armenia">Armenian Drams</string>
+    <string name="valute_name_georgia">Georgian Lari</string>
+    <string name="valute_name_ruble">Russian Ruble</string>
+    <string name="valute_name_australia">Australian Dollar</string>
+    <string name="valute_name_azerbaijani">Azerbaijani Manat</string>
+    <string name="valute_name_great_britain">British Pound Sterling</string>
+    <string name="valute_name_belarus">Belarusian Ruble</string>
+    <string name="valute_name_bulgarian">Bulgarian Lev</string>
+    <string name="valute_name_brazil">Brazilian Real</string>
+    <string name="valute_name_hungarian">Hungarian Forint</string>
+    <string name="valute_name_vietnam">Vietnamese Dong</string>
+    <string name="valute_name_hongkong">Hong Kong Dollar</string>
+    <string name="valute_name_dat">Danish Krone</string>
+    <string name="valute_name_arab">UAE Dirham</string>
+    <string name="valute_name_egypt">Egyptian Pound</string>
+    <string name="valute_name_india">Indian Rupee</string>
+    <string name="valute_name_indonesia">Indonesian Rupiah</string>
+    <string name="valute_name_kazakhstan">Kazakhstani Tenge</string>
+    <string name="valute_name_canada">Canadian Dollar</string>
+    <string name="valute_name_qatar">Qatari Riyal</string>
+    <string name="valute_name_kyrgyzstan">Kyrgyzstani Som</string>
+    <string name="valute_name_china">Chinese Yuan</string>
+    <string name="valute_name_moldova">Moldovan Leu</string>
+    <string name="valute_name_new_zealand">New Zealand Dollar</string>
+    <string name="valute_name_norway">Norwegian Krone</string>
+    <string name="valute_name_poland">Polish Zloty</string>
+    <string name="valute_name_romania">Romanian Leu</string>
+    <string name="valute_name_singapure">Singapore Dollar</string>
+    <string name="valute_name_tajikistan">Tajikistani Somoni</string>
+    <string name="valute_name_thailand">Thai Baht</string>
+    <string name="valute_name_turkmenistan">Turkmenistani Manat</string>
+    <string name="valute_name_turkey">Turkish Lira</string>
+    <string name="valute_name_uzbekistan">Uzbekistani Som</string>
+    <string name="valute_name_ukraine">Ukrainian Hryvnia</string>
+    <string name="valute_name_czech">Czech Koruna</string>
+    <string name="valute_name_sweden">Swedish Krona</string>
+    <string name="valute_name_switzerland">Swiss Franc</string>
+    <string name="valute_name_serbia">Serbian Dinar</string>
+    <string name="valute_name_uar">South African Rand</string>
+    <string name="valute_name_south_korea">South Korean Won</string>
+    <string name="valute_name_japan">Japanese Yen</string>
+
+    <string name="banner_1">demo-banner-yandex</string>
+    <string name="banner_ad_mob">ca-app-pub-3940256099942544/6300978111</string>
+
 </resources>
