@@ -1,62 +1,47 @@
 package com.example.currencyconverter.app.screens.mainscreen
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.ImageLoader
-import coil.compose.rememberAsyncImagePainter
-import coil.request.CachePolicy
-import coil.request.ImageRequest
-import com.example.currencyconverter.domain.Currency
-import com.example.currencyconverter.utils.getFlagImageResource
+import coil.compose.AsyncImagePainter
+import com.example.currencyconverter.data.room.CurrencyFieldEntity
 import java.text.NumberFormat
 import java.util.Locale
 
 @Composable
 fun CurrencyItem(
-    currency: Currency,
+    currency: CurrencyFieldEntity,
     isSelected: Boolean,
-    onCurrencySelected: (Currency, Int, Double, String) -> Unit
+    onCurrencySelected: (CurrencyFieldEntity) -> Unit,
+    onToggleFavorite: (CurrencyFieldEntity) -> Unit,
+    imagePainter: AsyncImagePainter
 ) {
-    val context = LocalContext.current
-
-    val imageLoader = ImageLoader.Builder(context)
-        .memoryCachePolicy(CachePolicy.ENABLED)
-        .diskCachePolicy(CachePolicy.ENABLED)
-        .build()
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
     ) {
-        // Load the image with caching
-        val imagePainter = rememberAsyncImagePainter(
-            ImageRequest.Builder(LocalContext.current)
-                .data(data = currency.getCountry().getFlagImageResource())
-                .apply(block = fun ImageRequest.Builder.() {
-                    crossfade(true)
-                    error(android.R.drawable.ic_delete)
-                    memoryCachePolicy(CachePolicy.ENABLED)
-                    diskCachePolicy(CachePolicy.ENABLED)
-                }).build(), imageLoader = imageLoader
-        )
         Image(
             painter = imagePainter,
             contentDescription = "Выбрать валюту",
@@ -64,41 +49,39 @@ fun CurrencyItem(
                 .size(55.dp)
                 .padding(top = 5.dp)
         )
+
         RadioButton(
             selected = isSelected,
-            onClick = {
-                currency.Nominal?.let { nominal ->
-                    currency.Value?.let { value ->
-                        onCurrencySelected(currency, nominal, value, currency.Name)
-                    }
-                }
-            }
+            onClick = { onCurrencySelected(currency) }
         )
 
         Spacer(modifier = Modifier.width(8.dp))
-        Column {
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
             Text(
-                text = currency.getNameValute(context),
+                text = stringResource(currency.country),
                 style = TextStyle(fontSize = 20.sp)
             )
-            val formattedValue = NumberFormat.getNumberInstance(Locale.getDefault()).apply {
-                maximumFractionDigits = 4
-            }.format(currency.Nominal?.let { currency.Value?.div(it) })
 
             Text(
-                text = formattedValue,
+                text = NumberFormat.getNumberInstance(Locale.getDefault())
+                    .apply {
+                        maximumFractionDigits = 4
+                    }.format(currency.nominal?.let { currency.value?.div(it) } ?: 0.0),
                 style = TextStyle(fontSize = 16.sp)
             )
         }
-    }
-    if (!isOnline(context)) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(text = "Нет интернета", fontSize = 20.sp)
-        }
 
+        IconButton(
+            onClick = { onToggleFavorite(currency) },
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+        ) {
+            Icon(
+                imageVector = if (currency.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                contentDescription = if (currency.isFavorite) "Удалить из избранного" else "Добавить в избранное",
+                tint = if (currency.isFavorite) Color.Red else Color.Gray)
+        }
     }
 }

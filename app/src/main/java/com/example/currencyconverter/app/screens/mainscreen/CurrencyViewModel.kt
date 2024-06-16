@@ -1,97 +1,172 @@
 package com.example.currencyconverter.app.screens.mainscreen
 
-import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.currencyconverter.data.DataStore.DataStoreManager
-import com.example.currencyconverter.domain.Currency
+import com.example.currencyconverter.R
+import com.example.currencyconverter.data.room.CurrencyFieldEntity
+import com.example.currencyconverter.data.room.CurrencyRepositoryRoom
+import com.example.currencyconverter.data.room.SelectedCurrency
 import com.example.currencyconverter.domain.CurrencyRepository
 import com.example.currencyconverter.utils.Country
-import com.example.currencyconverter.utils.valute.ValuteNameOne
-import com.example.currencyconverter.utils.valute.ValuteNameTwo
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CurrencyViewModel @Inject constructor(
-    private val currencyRepository: CurrencyRepository,
-    @ApplicationContext val context: Context
+    private val repository: CurrencyRepository,
+    private val repositoryRoom: CurrencyRepositoryRoom
 ) : ViewModel() {
-
-    private val _currencies = MutableLiveData<List<Currency>>()
-    val currencies: LiveData<List<Currency>> get() = _currencies
-
-    private val _actuliValuteOne = MutableLiveData<Currency?>()
-    val actuliValuteOne: LiveData<Currency?> get() = _actuliValuteOne
-
-    private val _actuliValuteTwo = MutableLiveData<Currency?>()
-    val actuliValuteTwo: LiveData<Currency?> get() = _actuliValuteTwo
-
-    private val _armenianCurrency = MutableLiveData<Currency?>()
-    val armenianCurrency: LiveData<Currency?> get() = _armenianCurrency
-
-    private val _usaCurrencyValue = MutableLiveData<Currency?>()
-    val usaCurrency: LiveData<Currency?> get() = _usaCurrencyValue
-
-    private val dataStoreManager = DataStoreManager(context)
-
-    init {
+    fun saveAllCurrency() {
         viewModelScope.launch {
-            val allCurrencies = currencyRepository.getCurrencies()
-            _currencies.value = allCurrencies
-            _armenianCurrency.value = allCurrencies.find {
-                it.Name.contains("Армянских драмов")
-            }
-            _usaCurrencyValue.value = allCurrencies.find {
-                it.Name.contains("Доллар США")
-            }
+            val serverCurrencies = repository.getCurrencies()
+            val currencyEntities = serverCurrencies.map { currency ->
+                CurrencyFieldEntity(
+                    currencyId = currency.ID,
+                    name = currency.Name,
+                    countryEnum = currency.getCountry(),
+                    country = currency.getNameValute(),
+                    value = currency.Value,
+                    nominal = currency.Nominal
+                )
+            }.toMutableList()
+            currencyEntities.removeAll { it.currencyId == "R01589" }
+            currencyEntities.add(
+                CurrencyFieldEntity(
+                    currencyId = "1",
+                    name = "Рубль",
+                    countryEnum = Country.RU,
+                    country = R.string.valute_name_ruble,
+                    value = 1.0,
+                    nominal = 1
+                )
+            )
+            repositoryRoom.saveCurrencyFields(currencyEntities)
         }
     }
 
-    fun updateValyte() {
-        if (!ValuteNameOne.equals("Рубль")) {
-            viewModelScope.launch {
-                val allCurrencies = currencyRepository.getCurrencies()
-                val selectedCurrency = allCurrencies.find { it.Name.contains(ValuteNameOne) }
+    fun saveSelectedCurrency() {
+        viewModelScope.launch {
+            val serverCurrencies = repository.getCurrencies()
+            val currencyEntities = serverCurrencies
+                .filter { currency -> currency.ID == "R01060" || currency.ID == "R01530" }
+                .map { currency ->
+                    SelectedCurrency(
+                        currencyId = currency.ID,
+                        name = currency.Name,
+                        countryEnum = currency.getCountry(),
+                        country = currency.getNameValute(),
+                        value = currency.Value,
+                        nominal = currency.Nominal
+                    )
+                }
 
-                selectedCurrency?.let {
-                    _actuliValuteOne.value = it
-                    it.Value?.let { it1 ->
-                        dataStoreManager.updateValueForSelectedCurrency(
-                            it1,
-                            true
-                        )
-                    }
+            repositoryRoom.saveSelectedCurrency(currencyEntities)
+        }
+    }
+
+    private fun updateCurrencyField() {
+        viewModelScope.launch {
+            val serverCurrencies = repository.getCurrencies()
+            val currencyEntities = serverCurrencies.map { currency ->
+                CurrencyFieldEntity(
+                    currencyId = currency.ID,
+                    name = currency.Name,
+                    countryEnum = currency.getCountry(),
+                    country = currency.getNameValute(),
+                    value = currency.Value,
+                    nominal = currency.Nominal
+                )
+            }
+            repositoryRoom.updateCurrencyField(currencyEntities)
+        }
+    }
+
+    fun updateSelectedCurrency() {
+        viewModelScope.launch {
+            val serverCurrencies = repository.getCurrencies()
+            val currencyEntities = serverCurrencies.map { currency ->
+                SelectedCurrency(
+                    currencyId = currency.ID,
+                    name = currency.Name,
+                    countryEnum = currency.getCountry(),
+                    country = currency.getNameValute(),
+                    value = currency.Value,
+                    nominal = currency.Nominal
+                )
+            }
+            repositoryRoom.updateSelectedCurrencyFieldList(currencyEntities)
+        }
+    }
+
+    fun updateSelectedCurrencyId(
+        selectedId: String,
+        updatedCurrency: SelectedCurrency,
+        shouldUpdate: Boolean = false
+    ) {
+        if (shouldUpdate) {
+            viewModelScope.launch {
+                try {
+                    repositoryRoom.getSelectedCurrencyById(selectedId)
+                        .collect { selectedCurrency ->
+                            selectedCurrency?.let {
+                                val newCurrency = SelectedCurrency(
+                                    id = it.id,
+                                    currencyId = updatedCurrency.currencyId,
+                                    name = updatedCurrency.name,
+                                    countryEnum = updatedCurrency.countryEnum,
+                                    country = updatedCurrency.country,
+                                    value = updatedCurrency.value,
+                                    nominal = updatedCurrency.nominal
+                                )
+                                repositoryRoom.updateSelectedCurrencyField(newCurrency)
+                                this.cancel()
+                            }
+                        }
+                } catch (_: NumberFormatException) {
                 }
             }
         }
     }
 
-    fun updateValyteTwo() {
-        if (!ValuteNameTwo.equals("Рубль")) {
-            viewModelScope.launch {
-                val allCurrencies = currencyRepository.getCurrencies()
-                val selectedCurrency = allCurrencies.find { it.Name.contains(ValuteNameTwo) }
-                selectedCurrency?.let {
-                    _actuliValuteOne.value = it
-                    it.Value?.let { it1 ->
-                        dataStoreManager.updateValueForSelectedCurrency(
-                            it1,
-                            false
-                        )
-                    }
-                }
-            }
+    fun updateCurrency(updatedCurrency: CurrencyFieldEntity) {
+        viewModelScope.launch {
+            repositoryRoom.updateCurrency(updatedCurrency)
         }
     }
-    fun saveSelectedCurrency(country: Country, value: Double, nominal: Int, name: String) {
-        // Вызываем метод updateValueForSelectedCurrency у dataStoreManager
+
+    fun getAllCurrencyFields(): Flow<List<CurrencyFieldEntity>> {
+        return repositoryRoom.getAllCurrencyFields()
+    }
+
+    fun saveSelectedCurrency(selectedCurrency: SelectedCurrency) {
         viewModelScope.launch {
-            dataStoreManager.saveSelectedCurrencies(country, value, nominal, name, true) // Предположим, что для первой валюты
+            repositoryRoom.saveSelectedCurrency(selectedCurrency)
+        }
+    }
+
+    fun getAllSelectedCurrencies(): Flow<List<SelectedCurrency?>> {
+        return repositoryRoom.getAllSelectedCurrencies()
+    }
+
+    fun deleteSelectedCurrency(currency: SelectedCurrency?) {
+        viewModelScope.launch {
+            currency?.let { repositoryRoom.deleteSelectedCurrency(it) }
+        }
+    }
+
+    fun updateCurrenciesIfNeeded() {
+        viewModelScope.launch {
+            val localCurrencies = repositoryRoom.getAllCurrencyFields().firstOrNull()
+            val localSelectedCurrencies = repositoryRoom.getAllSelectedCurrencies().firstOrNull()
+            saveAllCurrency()
+            updateCurrencyField()
+            if (localSelectedCurrencies.isNullOrEmpty()) {
+                saveSelectedCurrency()
+            }
         }
     }
 }

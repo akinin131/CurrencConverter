@@ -1,10 +1,11 @@
 package com.example.currencyconverter
 
 import android.os.Bundle
-import android.provider.Settings.Global.getString
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,35 +13,47 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.currencyconverter.app.screens.dialoge.AlertDialogueAddListCurrency
+import androidx.hilt.navigation.compose.hiltViewModel
+import coil.ImageLoader
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
+import com.example.currencyconverter.app.screens.mainscreen.AlertDialogExample
 import com.example.currencyconverter.app.screens.mainscreen.CurrencyViewModel
 import com.example.currencyconverter.botton_navigation.MainScreen
 import com.example.currencyconverter.ui.theme.CurrencyConverterTheme
+import com.example.currencyconverter.utils.getFlagImageResource
 import com.example.currencyconverter.yandex.Banner
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val viewModel: CurrencyViewModel by viewModels()
-
+    private var updateValute = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
-            CurrencyConverterTheme {
+            CurrencyConverterTheme() {
                 Scaffold(
                     topBar = {
                         MainScreenToolbar()
@@ -50,13 +63,15 @@ class MainActivity : ComponentActivity() {
                         Column(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(it), // Ensure content is padded correctly within the Scaffold
+                                .padding(it),
                             verticalArrangement = Arrangement.Bottom,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Spacer(modifier = Modifier
-                                .fillMaxWidth()
-                                .height(30.dp))
+                            Spacer(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(30.dp)
+                            )
                             Banner(id = R.string.banner_1)
                         }
                     }
@@ -64,28 +79,48 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        viewModel.armenianCurrency.observe(this) {}
-        viewModel.usaCurrency.observe(this) {}
-        viewModel.currencies.observe(this) {}
+        if (updateValute) {
+            viewModel.updateCurrenciesIfNeeded()
+            viewModel.updateSelectedCurrency()
+            updateValute = false
+        }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreenToolbar() {
+fun MainScreenToolbar(currencyViewModel: CurrencyViewModel = hiltViewModel()) {
+    val currencyFields by currencyViewModel.getAllCurrencyFields()
+        .collectAsState(initial = emptyList())
+    val context = LocalContext.current
+    val imageLoader = remember(context) { ImageLoader(context) }
+
+    val imagePaintersMap = currencyFields.associateBy(
+        { it.currencyId },
+        { currencyField ->
+            val imageRequest = ImageRequest.Builder(context)
+                .data(currencyField.countryEnum.getFlagImageResource())
+                .crossfade(true)
+                .error(android.R.drawable.ic_delete)
+                .build()
+            rememberAsyncImagePainter(model = imageRequest, imageLoader = imageLoader)
+        }
+    )
+
+    var showDialog by remember { mutableStateOf(false) }
+    val isDarkTheme = isSystemInDarkTheme()
+    val backgroundColor = if (isDarkTheme) {
+        MaterialTheme.colorScheme.onSecondary
+    } else {
+        MaterialTheme.colorScheme.surface
+    }
     TopAppBar(
         title = { Text(stringResource(id = R.string.app_name)) },
-        backgroundColor = MaterialTheme.colors.surface,
+        modifier = Modifier.background(backgroundColor),
         actions = {
             IconButton(
                 onClick = {
-                    AlertDialogueAddListCurrency(
-                        onDismissRequest = { /* Обработчик закрытия */ },
-                        onConfirmation = { /* Обработчик подтверждения */ },
-                        onCountrySelected = { country, value, nominal, name ->
-                            // Обработка выбора валюты
-                        },
-                        currencyViewModel = viewModel // Передача viewModel
-                    )
+                    showDialog = true
                 }
             ) {
                 Icon(
@@ -93,7 +128,16 @@ fun MainScreenToolbar() {
                     contentDescription = "Add"
                 )
             }
-
         }
     )
+
+    if (showDialog) {
+        AlertDialogExample(
+            onDismissRequest = { showDialog = false },
+            currencyFields = currencyFields,
+            imagePaintersMap = imagePaintersMap,
+            currencyViewModel = currencyViewModel,
+            selectedCurrencyId = ""
+        )
+    }
 }

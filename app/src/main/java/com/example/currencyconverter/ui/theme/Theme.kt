@@ -57,8 +57,10 @@ fun CurrencyConverterTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            window.statusBarColor = colorScheme.surface.toArgb()
+            val insetsController = WindowCompat.getInsetsController(window, view)
+            insetsController.isAppearanceLightStatusBars = !darkTheme // Устанавливаем значки светлыми на темной теме
+            insetsController.isAppearanceLightNavigationBars = !darkTheme // Устанавливаем значки светлыми на темной теме
         }
     }
 

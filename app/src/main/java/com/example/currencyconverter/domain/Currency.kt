@@ -1,7 +1,6 @@
 package com.example.currencyconverter.domain
 
 import android.content.Context
-import android.provider.Settings.System.getString
 import com.example.currencyconverter.R
 import com.example.currencyconverter.utils.Country
 
@@ -62,52 +61,54 @@ data class Currency(
             else -> Country.USA
         }
     }
-    fun getNameValute(context: Context): String {
+
+    fun getNameValute(): Int {
         return when {
-            ID.contains("R01235") -> context.getString(R.string.valute_name_usa)
-            Name.contains("Евро") -> context.getString(R.string.valute_name_euro)
-            Name.contains("Армянских драмов") -> context.getString(R.string.valute_name_armenia)
-            Name.contains("Грузинский лари") -> context.getString(R.string.valute_name_georgia)
-            Name.contains("Рубль") -> context.getString(R.string.valute_name_ruble)
-            Name.contains("Австралийский доллар") -> context.getString(R.string.valute_name_australia)
-            Name.contains("Азербайджанский манат") -> context.getString(R.string.valute_name_azerbaijani)
-            Name.contains("Фунт стерлингов Соединенного королевства") -> context.getString(R.string.valute_name_great_britain)
-            Name.contains("Белорусский рубль") -> context.getString(R.string.valute_name_belarus)
-            Name.contains("Болгарский лев") -> context.getString(R.string.valute_name_bulgarian)
-            Name.contains("Бразильский реал") -> context.getString(R.string.valute_name_brazil)
-            Name.contains("Венгерских форинтов") -> context.getString(R.string.valute_name_hungarian)
-            Name.contains("Вьетнамских донгов") -> context.getString(R.string.valute_name_vietnam)
-            Name.contains("Гонконгский доллар") -> context.getString(R.string.valute_name_hongkong)
-            Name.contains("Датская крона") -> context.getString(R.string.valute_name_dat)
-            Name.contains("Дирхам ОАЭ") -> context.getString(R.string.valute_name_arab)
-            Name.contains("Египетских фунтов") -> context.getString(R.string.valute_name_egypt)
-            Name.contains("Индийских рупий") -> context.getString(R.string.valute_name_india)
-            Name.contains("Индонезийских рупий") -> context.getString(R.string.valute_name_indonesia)
-            Name.contains("Казахстанских тенге") -> context.getString(R.string.valute_name_kazakhstan)
-            Name.contains("Канадский доллар") -> context.getString(R.string.valute_name_canada)
-            Name.contains("Катарский риал") -> context.getString(R.string.valute_name_qatar)
-            Name.contains("Киргизских сомов") -> context.getString(R.string.valute_name_kyrgyzstan)
-            Name.contains("Китайский юань") -> context.getString(R.string.valute_name_china)
-            Name.contains("Молдавских леев") -> context.getString(R.string.valute_name_moldova)
-            Name.contains("Новозеландский доллар") -> context.getString(R.string.valute_name_new_zealand)
-            Name.contains("Норвежских крон") -> context.getString(R.string.valute_name_norway)
-            Name.contains("Польский злотый") -> context.getString(R.string.valute_name_poland)
-            Name.contains("Румынский лей") -> context.getString(R.string.valute_name_romania)
-            Name.contains("Сингапурский доллар") -> context.getString(R.string.valute_name_singapure)
-            Name.contains("Таджикских сомони") -> context.getString(R.string.valute_name_tajikistan)
-            Name.contains("Таиландских батов") -> context.getString(R.string.valute_name_thailand)
-            Name.contains("Новый туркменский манат") -> context.getString(R.string.valute_name_turkmenistan)
-            Name.contains("Турецких лир") -> context.getString(R.string.valute_name_turkey)
-            Name.contains("Узбекских сумов") -> context.getString(R.string.valute_name_uzbekistan)
-            Name.contains("Украинских гривен") -> context.getString(R.string.valute_name_ukraine)
-            Name.contains("Чешских крон") -> context.getString(R.string.valute_name_czech)
-            Name.contains("Шведских крон") -> context.getString(R.string.valute_name_sweden)
-            Name.contains("Швейцарский франк") -> context.getString(R.string.valute_name_switzerland)
-            Name.contains("Сербских динаров") -> context.getString(R.string.valute_name_serbia)
-            Name.contains("Южноафриканских рэндов") -> context.getString(R.string.valute_name_uar)
-            Name.contains("Вон Республики Корея") -> context.getString(R.string.valute_name_south_korea)
-            Name.contains("Японских иен") -> context.getString(R.string.valute_name_japan)
-            else -> context.getString(R.string.valute_name_usa)
+            ID.contains("R01235") -> R.string.valute_name_usa
+            Name.contains("Евро") -> R.string.valute_name_euro
+            Name.contains("Армянских драмов") -> R.string.valute_name_armenia
+            Name.contains("Грузинский лари") -> R.string.valute_name_georgia
+            Name.contains("Рубль") -> R.string.valute_name_ruble
+            Name.contains("Австралийский доллар") -> R.string.valute_name_australia
+            Name.contains("Азербайджанский манат") -> R.string.valute_name_azerbaijani
+            Name.contains("Фунт стерлингов Соединенного королевства") -> R.string.valute_name_great_britain
+            Name.contains("Белорусский рубль") -> R.string.valute_name_belarus
+            Name.contains("Болгарский лев") -> R.string.valute_name_bulgarian
+            Name.contains("Бразильский реал") -> R.string.valute_name_brazil
+            Name.contains("Венгерских форинтов") -> R.string.valute_name_hungarian
+            Name.contains("Вьетнамских донгов") -> R.string.valute_name_vietnam
+            Name.contains("Гонконгский доллар") -> R.string.valute_name_hongkong
+            Name.contains("Датская крона") -> R.string.valute_name_dat
+            Name.contains("Дирхам ОАЭ") -> R.string.valute_name_arab
+            Name.contains("Египетских фунтов") -> R.string.valute_name_egypt
+            Name.contains("Индийских рупий") -> R.string.valute_name_india
+            Name.contains("Индонезийских рупий") -> R.string.valute_name_indonesia
+            Name.contains("Казахстанских тенге") -> R.string.valute_name_kazakhstan
+            Name.contains("Канадский доллар") -> R.string.valute_name_canada
+            Name.contains("Катарский риал") -> R.string.valute_name_qatar
+            Name.contains("Киргизских сомов") -> R.string.valute_name_kyrgyzstan
+            Name.contains("Китайский юань") -> R.string.valute_name_china
+            Name.contains("Молдавских леев") -> R.string.valute_name_moldova
+            Name.contains("Новозеландский доллар") -> R.string.valute_name_new_zealand
+            Name.contains("Норвежских крон") -> R.string.valute_name_norway
+            Name.contains("Польский злотый") -> R.string.valute_name_poland
+            Name.contains("Румынский лей") -> R.string.valute_name_romania
+            Name.contains("Сингапурский доллар") -> R.string.valute_name_singapure
+            Name.contains("Таджикских сомони") -> R.string.valute_name_tajikistan
+            Name.contains("Таиландских батов") -> R.string.valute_name_thailand
+            Name.contains("Новый туркменский манат") -> R.string.valute_name_turkmenistan
+            Name.contains("Турецких лир") -> R.string.valute_name_turkey
+            Name.contains("Узбекских сумов") -> R.string.valute_name_uzbekistan
+            Name.contains("Украинских гривен") -> R.string.valute_name_ukraine
+            Name.contains("Чешских крон") -> R.string.valute_name_czech
+            Name.contains("Шведских крон") -> R.string.valute_name_sweden
+            Name.contains("Швейцарский франк") -> R.string.valute_name_switzerland
+            Name.contains("Сербских динаров") -> R.string.valute_name_serbia
+            Name.contains("Южноафриканских рэндов") -> R.string.valute_name_uar
+            Name.contains("Вон Республики Корея") -> R.string.valute_name_south_korea
+            Name.contains("Японских иен") -> R.string.valute_name_japan
+            else -> R.string.valute_name_usa
         }
     }
+
 }
