@@ -125,7 +125,8 @@ fun AlertDialogExample(
     val (searchQuery, setSearchQuery) = remember { mutableStateOf("") }
 
     val filteredCurrencyFields = currencyFields.filter { currencyField ->
-        currencyField.countryEnum.name.contains(searchQuery, ignoreCase = true)
+        val localizedCountryName = context.resources.getString(currencyField.country)
+        localizedCountryName.contains(searchQuery, ignoreCase = true)
     }
 
     val sortedFilteredCurrencyFields = filteredCurrencyFields.sortedByDescending { it.isFavorite }

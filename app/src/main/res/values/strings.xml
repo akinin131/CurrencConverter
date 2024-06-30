@@ -5,7 +5,7 @@
     <string name="valute_one_editText">Currency №1</string>
     <string name="valute_two_editText">Currency №2</string>
     <string name="search">Currency search</string>
-    <string name="valute_name_usa">USA</string>
+    <string name="valute_name_usa">U.S. dollar</string>
     <string name="valute_name_euro">Euro</string>
     <string name="valute_name_armenia">Armenian Drams</string>
     <string name="valute_name_georgia">Georgian Lari</string>
@@ -49,7 +49,7 @@
     <string name="valute_name_south_korea">South Korean Won</string>
     <string name="valute_name_japan">Japanese Yen</string>
 
-    <string name="banner_1">demo-banner-yandex</string>
+    <string name="banner_1">R-M-8027445-1</string>
     <string name="banner_ad_mob">ca-app-pub-3940256099942544/6300978111</string>
 
 </resources>

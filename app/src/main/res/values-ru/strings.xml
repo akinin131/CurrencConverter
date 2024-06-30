@@ -6,7 +6,7 @@
     <string name="valute_one_editText">Валюта №1</string>
     <string name="valute_two_editText">Валюта №2</string>
     <string name="search">Поиск валюты</string>
-    <string name="valute_name_usa">США</string>
+    <string name="valute_name_usa">Доллар США</string>
     <string name="valute_name_euro">Евро</string>
     <string name="valute_name_armenia">Армянские драмы</string>
     <string name="valute_name_georgia">Грузинские лари</string>
@@ -50,6 +50,6 @@
     <string name="valute_name_south_korea">Вон Республики Корея</string>
     <string name="valute_name_japan">Японские иены</string>
 
-    <string name="banner_1">demo-banner-yandex</string>
+    <string name="banner_1">R-M-8027445-1</string>
     <string name="banner_ad_mob">ca-app-pub-3940256099942544/6300978111</string>
 </resources>

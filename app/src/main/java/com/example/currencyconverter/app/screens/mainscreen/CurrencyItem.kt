@@ -64,13 +64,13 @@ fun CurrencyItem(
                 style = TextStyle(fontSize = 20.sp)
             )
 
-            Text(
-                text = NumberFormat.getNumberInstance(Locale.getDefault())
-                    .apply {
-                        maximumFractionDigits = 4
-                    }.format(currency.nominal?.let { currency.value?.div(it) } ?: 0.0),
-                style = TextStyle(fontSize = 16.sp)
-            )
+//            Text(
+   //             text = NumberFormat.getNumberInstance(Locale.getDefault())
+     //               .apply {
+       //                 maximumFractionDigits = 4
+         //           }.format(currency.nominal?.let { currency.value?.div(it) } ?: 0.0),
+           //     style = TextStyle(fontSize = 16.sp)
+            //)
         }
 
         IconButton(

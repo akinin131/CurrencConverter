@@ -52,7 +52,7 @@ class CurrencyViewModel @Inject constructor(
         viewModelScope.launch {
             val serverCurrencies = repository.getCurrencies()
             val currencyEntities = serverCurrencies
-                .filter { currency -> currency.ID == "R01060" || currency.ID == "R01530" }
+                .filter { currency -> currency.ID == "R01235"}
                 .map { currency ->
                     SelectedCurrency(
                         currencyId = currency.ID,
@@ -62,8 +62,17 @@ class CurrencyViewModel @Inject constructor(
                         value = currency.Value,
                         nominal = currency.Nominal
                     )
-                }
+                }.toMutableList()
 
+            val customCurrency = SelectedCurrency(
+                currencyId = "1",
+                name = "Рубль",
+                countryEnum = Country.RU,
+                country = R.string.valute_name_ruble,
+                value = 1.0,
+                nominal = 1
+            )
+            currencyEntities.add(customCurrency)
             repositoryRoom.saveSelectedCurrency(currencyEntities)
         }
     }
