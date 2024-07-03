@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Converter</string>
+    <string name="app_name">Currency Converter</string>
     <string name="not_connection">Connection problem</string>
     <string name="check_connection">Check your network settings</string>
     <string name="valute_one_editText">Currency №1</string>
