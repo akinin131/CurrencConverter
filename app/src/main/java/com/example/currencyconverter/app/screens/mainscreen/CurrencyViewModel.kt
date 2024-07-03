@@ -172,7 +172,10 @@ class CurrencyViewModel @Inject constructor(
             val localCurrencies = repositoryRoom.getAllCurrencyFields().firstOrNull()
             val localSelectedCurrencies = repositoryRoom.getAllSelectedCurrencies().firstOrNull()
             saveAllCurrency()
-            updateCurrencyField()
+            if (localCurrencies != null) {
+                if (localCurrencies.size < 2)
+                    updateCurrencyField()
+            }
             if (localSelectedCurrencies.isNullOrEmpty()) {
                 saveSelectedCurrency()
             }
